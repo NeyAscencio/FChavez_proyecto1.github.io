@@ -1,0 +1,44 @@
+@charset "utf-8";
+/* CSS Document */
+$base-font-size: 16px !default
+$base-line-height: 20px !default
+$rem-scale-factor: 1rem / $base-font-size
+
+$screen-min-width: 320px !default
+$site-max-width: 1200px !default
+$container-padding: 16px !default
+$site-fluid-breakpoint: 1920px !default
+
+// don't touch
+$container-percentage-width: ($site-max-width - $screen-min-width + 2 * $container-padding) / ($site-fluid-breakpoint - $screen-min-width)
+
+html
+  font-size: $base-font-size * 1em / 16px
+  line-height: $base-line-height / $base-font-size
+  min-width: $screen-min-width
+  min-width: $screen-min-width * $rem-scale-factor
+
+body
+  margin: 0
+
+.container
+  margin: 0 auto
+  max-width: $site-max-width
+  max-width: $site-max-width * $rem-scale-factor
+  //padding: 0 $container-padding
+  //padding: 0 $container-padding * $rem-scale-factor
+  
+  // when the width of the window is $screen-min-width
+  // containers take up 100% of the screen width, including their padding
+  // when the width of the window is $site-fluid-breakpoint
+  // containers will be $site-max-width wide
+  //
+  // in browsers that support media queries and calc()
+  // they scale smoothly between those two points
+  // it degrades gracefully in browsers that don't
+  @media only screen and (max-width: $site-fluid-breakpoint * $rem-scale-factor)
+    width: percentage(($screen-min-width - 2 * $container-padding) / $screen-min-width)
+    width: calc(#{percentage($container-percentage-width)} + #{($site-max-width - $site-fluid-breakpoint * $container-percentage-width) * $rem-scale-factor})
+
+    .container
+      width: 100%
